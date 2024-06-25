@@ -25,13 +25,13 @@ OceanWavesApp::OceanWavesApp() : time(0.0) {
 
 void OceanWavesApp::setup()
 {
-	mCam.lookAt(vec3(3, 1, 20), vec3(0));
+	mCam.lookAt(vec3(40, 10, 30), vec3(0));
 
 	mGlsl = gl::GlslProg::create(gl::GlslProg::Format()
 		.vertex( loadAsset("render.vert") )
 		.fragment( loadAsset("render.frag") ));
 
-	auto plane = geom::Plane().subdivisions(ivec2(300)).size(ivec2(300, 300));
+	auto plane = geom::Plane().subdivisions(ivec2(100)).size(ivec2(100, 100));
 	mRect = gl::Batch::create(plane, mGlsl);
 
 	gl::enableDepthWrite();
