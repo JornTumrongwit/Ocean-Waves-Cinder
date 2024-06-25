@@ -10,11 +10,18 @@ class OceanWavesApp : public App {
   public:
 	  void	setup() override;
 	  void	draw() override;
+	  void	update() override;
+	  OceanWavesApp();
 
 	  CameraPersp         mCam;
 	  gl::BatchRef        mRect;
-	  gl::GlslProgRef		mGlsl;
+	  gl::GlslProgRef	  mGlsl;
+	  float               time;
 };
+
+OceanWavesApp::OceanWavesApp() : time(0.0) {
+
+}
 
 void OceanWavesApp::setup()
 {
@@ -31,12 +38,18 @@ void OceanWavesApp::setup()
 	gl::enableDepthRead();
 }
 
+void OceanWavesApp::update()
+{
+	time += 0.1;
+}
+
 void OceanWavesApp::draw()
 { 
 	gl::clear(Color(0.2f, 0.2f, 0.3f));
 	gl::setMatrices(mCam);
 
 	mGlsl->uniform("uCheckSize", 30.0f);
+	mGlsl->uniform("timepassed", time);
 	mRect->draw();
 }
 

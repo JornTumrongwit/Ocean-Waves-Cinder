@@ -1,11 +1,13 @@
 uniform mat4	ciModelViewProjection;
+uniform float   timepassed;
+
 in vec4			ciPosition;
 in vec2			ciTexCoord0;
 out vec2		TexCoord0;
 
 float offset(vec2 uv)
 {
-	return (sin(uv.x * 15.0) +
+	return (sin(uv.x * 15.0 + timepassed) +
 		cos(uv.y * 7.0f + uv.x * 13.0f)) * 0.1f;
 }
 
