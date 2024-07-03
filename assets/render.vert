@@ -1,19 +1,42 @@
 uniform mat4	ciModelViewProjection;
 uniform float   timepassed;
+uniform float   offset;
+uniform float   zoff;
+uniform float   seed;
+uniform float   amplitude;
+uniform float   amp_mult;
+uniform float   frequency;
+uniform float   freq_mult;
 
 in vec4			ciPosition;
 in vec2			ciTexCoord0;
 out vec2		TexCoord0;
 
-float offset(vec3 uv, float time)
+vec3 wave(vec3 uv)
 {
-	return exp(sin(0.5*uv.x + time)) + exp(sin(1*uv.x + 0.125*time)) + exp(0.5*sin(uv.x + 0.05*time)) + 
-			2 * exp(sin(0.3*uv.z + 0.25*time)) + 0.2 * exp(sin(1.25*uv.z + 0.45*time)) + 0.8 * exp(sin(uv.z + 0.35*time));
+	float a = amplitude;
+	float f = frequency;
+	
+	float rise = 0.0;
+	int i = 0
+	while(i<1){
+		vec2 dir = normalize(vec2(cos(seed), sin(seed)));
+		float theta = f*dot(uv.xz, dir) + 1.5*timepassed;
+		vec3 w = vec3(0.0);
+		rise += a*exp(sin(theta));
+		a *= amp_mult;
+		f *= freq_mult;
+		i += 1;
+	}
+	w.x = rise - offset;
+	return w;
 }
 
 void main(void) {
 	vec4 pos = ciPosition;
-	pos.y = offset(pos.xyz, timepassed*0.7) * 0.25;
+	vec3 w = wave(pos.xyz);
+	pos.y = w.x;
+	pos.z += zoff;
 	gl_Position = ciModelViewProjection * pos;
 	TexCoord0 = ciTexCoord0;
 }
