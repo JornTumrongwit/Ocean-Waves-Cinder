@@ -28,7 +28,7 @@ OceanWavesApp::OceanWavesApp() : time(0.0) {
 
 void OceanWavesApp::setup()
 {
-	mCam.lookAt(vec3(0, 10, -30), vec3(0));
+	mCam.lookAt(vec3(0, 5, -30), vec3(0));
 
 	mGlsl = gl::GlslProg::create(gl::GlslProg::Format()
 		.vertex( loadAsset("render.vert") )
@@ -60,52 +60,87 @@ void OceanWavesApp::draw()
 
 void OceanWavesApp::updateParams()
 {
-	static float seed = 12.0f;
+	static float seed = 0.532f;
+	static float seed_mult = 0.2432f;
 	static float amplitude = 1.5f;
 	static float amp_mult = 1.0f;
-	static float offset = 124.5f; 
+	static float offset = 41.0f; 
 	static float zoff = 450.0f;
-	static float frequency = 1.6f;
+	static float frequency = 0.05f;
 	static float freq_mult = 1.0f;
+	static float speed = 1.5f;
+	static float speed_mult = 0.6f;
 	static int wave_count = 4;
+	static float peak = 0.8f;
+	static float peak_offset = 0.2f;
 
 	ImGui::Begin("Ocean Shader");
-	if (ImGui::InputFloat("seed", (float*) &seed, 12.0)) {
+	if (ImGui::InputFloat("seed", (float*) &seed, 0.01f)) {
 		mGlsl->uniform("seed", seed);
 	}
-	if (ImGui::DragFloat("near-far offset", &zoff, 0.1f, -500.0f, 500.0f)) {
+	if (ImGui::InputFloat("seed_mult", (float*)&seed_mult, 0.01f)) {
+		mGlsl->uniform("seed_mult", seed_mult);
+	}
+	if (ImGui::DragFloat("near-far offset", &zoff, 0.1f)) {
 		mGlsl->uniform("zoff", zoff);
 	}
 	if (ImGui::DragFloat("up-down offset", &offset, 1.0f)) {
 		mGlsl->uniform("offset", offset);
 	}
-	if (ImGui::DragFloat("amplitude", &amplitude, 0.1f)) {
+	if (ImGui::DragFloat("amplitude", &amplitude, 0.001f)) {
 		mGlsl->uniform("amplitude", amplitude);
 	}
-	if (ImGui::DragFloat("amp_mult", &amp_mult, 0.1f)) {
+	if (ImGui::DragFloat("amp_mult", &amp_mult, 0.001f)) {
 		mGlsl->uniform("amp_mult", amp_mult);
 	}
-	if (ImGui::DragFloat("frequency", &frequency, 0.1f)) {
+	if (ImGui::DragFloat("frequency", &frequency, 0.001f)) {
 		mGlsl->uniform("frequency", frequency);
 	}
-	if (ImGui::DragFloat("freq_mult", &freq_mult, 0.1f)) {
+	if (ImGui::DragFloat("freq_mult", &freq_mult, 0.001f)) {
 		mGlsl->uniform("freq_mult", freq_mult);
+	}
+	if (ImGui::DragFloat("speed", &speed, 0.001f)) {
+		mGlsl->uniform("speed", speed);
+	}
+	if (ImGui::DragFloat("speed_mult", &speed_mult, 0.001f)) {
+		mGlsl->uniform("speed_mult", speed_mult);
+	}
+	if (ImGui::DragFloat("peak", &peak, 0.001f)) {
+		mGlsl->uniform("peak", peak);
+	}
+	if (ImGui::DragFloat("peak_offset", &peak_offset, 0.001f)) {
+		mGlsl->uniform("peak_offset", peak_offset);
+	}
+	if (ImGui::InputInt("wave_count", &wave_count, 1)) {
+		mGlsl->uniform("wave_count", wave_count);
 	}
 	if (ImGui::Button("Reset")) {
-		seed = 12.0f;
+		seed = 123.2f;
 		mGlsl->uniform("seed", seed);
-		amplitude = 1.5f;
+		speed_mult = 12.2f;
+		mGlsl->uniform("seed_mult", seed_mult);
+		amplitude = 3.08f;
 		mGlsl->uniform("amplitude", amplitude);
-		amp_mult = 1.0f;
+		amp_mult = 0.22f;
 		mGlsl->uniform("amp_mult", amp_mult);
-		offset = 124.5f;
+		offset = 30.0f;
 		mGlsl->uniform("offset", offset);
-		zoff = 450.0f;
+		zoff = 466.5f;
 		mGlsl->uniform("zoff", zoff);
-		frequency = 1.6f;
+		frequency = 0.06f;
 		mGlsl->uniform("frequency", frequency);
-		freq_mult = 1.0f;
+		freq_mult = 3.06f;
 		mGlsl->uniform("freq_mult", freq_mult);
+		speed = 0.6f;
+		mGlsl->uniform("speed", speed);
+		speed_mult = 1.94f;
+		mGlsl->uniform("speed_mult", speed_mult);
+		peak = 1.7f;
+		mGlsl->uniform("peak", peak);
+		peak_offset = 0.2f;
+		mGlsl->uniform("peak_offset", peak_offset);
+		wave_count = 32;
+		mGlsl->uniform("wave_count", wave_count);
 	}
 	ImGui::End();
 }

@@ -1,18 +1,15 @@
+#version 330 core
 uniform float		uCheckSize;
 
-in vec2				TexCoord0;
+in vec3             w;
 out vec4			oColor;
 
-vec4 checker(vec2 uv)
+vec2 checker(vec2 norm)
 {
-	float v = floor(uCheckSize * uv.x) +
-		floor(uCheckSize * uv.y);
-	if (mod(v, 2.0) < 1.0)
-		return vec4(1, 1, 1, 1);
-	else
-		return vec4(0, 0, 0, 1);
+	return norm;
 }
 
 void main(void) {
-	oColor = checker(TexCoord0);
+	vec2 norm = w.yz;
+	oColor = vec4(norm.x, norm.y, 0.0, 1.0);
 }
