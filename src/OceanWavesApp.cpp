@@ -43,7 +43,7 @@ void OceanWavesApp::setup()
 
 void OceanWavesApp::update()
 {
-	time += 0.1;
+	time += 0.1f;
 	updateParams();
 }
 
@@ -73,6 +73,12 @@ void OceanWavesApp::updateParams()
 	static int wave_count = 4;
 	static float peak = 0.8f;
 	static float peak_offset = 0.2f;
+	static float shininess = 0.4f;
+	static float lightstr = 0.4f;
+	static vec3 ambient = vec3(0.0f, 0.0f, 0.1f);
+	static vec3 diffuse = vec3(1.0f, 1.0f, 0.9f);
+	static vec3 lightdir = vec3(1.0f, 1.0f, 1.0f);
+	static vec3 specular = vec3(1.0f, 1.0f, 1.0f);
 
 	ImGui::Begin("Ocean Shader");
 	if (ImGui::InputFloat("seed", (float*) &seed, 0.01f)) {
@@ -114,33 +120,66 @@ void OceanWavesApp::updateParams()
 	if (ImGui::InputInt("wave_count", &wave_count, 1)) {
 		mGlsl->uniform("wave_count", wave_count);
 	}
+	ImGui::Separator();
+	ImGui::Text("Colors and Light");
+	if (ImGui::DragFloat3("Ambient", &ambient, 0.001f, 0.0f, 1.0f)) {
+		mGlsl->uniform("ambient", ambient);
+	}
+	if (ImGui::DragFloat3("Specular", &specular, 0.001f, 0.0f, 1.0f)) {
+		mGlsl->uniform("specular", specular);
+	}
+	if (ImGui::DragFloat3("Diffuse", &diffuse, 0.001f, 0.0f, 1.0f)) {
+		mGlsl->uniform("diffuse", diffuse);
+	}
+	if (ImGui::DragFloat3("Light Direction", &lightdir, 0.001f)) {
+		mGlsl->uniform("lightdir", lightdir);
+	}
+	if (ImGui::DragFloat("lightstr", &lightstr, 0.001f)) {
+		mGlsl->uniform("lightstr", lightstr);
+	}
+	if (ImGui::DragFloat("shininess", &shininess, 0.001f)) {
+		mGlsl->uniform("shininess", shininess);
+	}
+	ImGui::Separator();
 	if (ImGui::Button("Reset")) {
 		seed = 123.2f;
 		mGlsl->uniform("seed", seed);
-		speed_mult = 12.2f;
+		seed_mult = 1243.2f;
 		mGlsl->uniform("seed_mult", seed_mult);
-		amplitude = 3.08f;
+		amplitude = 1.955f;
 		mGlsl->uniform("amplitude", amplitude);
-		amp_mult = 0.22f;
+		amp_mult = 0.867f;
 		mGlsl->uniform("amp_mult", amp_mult);
-		offset = 30.0f;
+		offset = 21.0f;
 		mGlsl->uniform("offset", offset);
 		zoff = 466.5f;
 		mGlsl->uniform("zoff", zoff);
-		frequency = 0.06f;
+		frequency = 0.034f;
 		mGlsl->uniform("frequency", frequency);
-		freq_mult = 3.06f;
+		freq_mult = 1.194f;
 		mGlsl->uniform("freq_mult", freq_mult);
-		speed = 0.6f;
+		speed = 0.452f;
 		mGlsl->uniform("speed", speed);
-		speed_mult = 1.94f;
+		speed_mult = 1.018f;
 		mGlsl->uniform("speed_mult", speed_mult);
-		peak = 1.7f;
+		peak = 2.725f;
 		mGlsl->uniform("peak", peak);
-		peak_offset = 0.2f;
+		peak_offset = 0.224f;
 		mGlsl->uniform("peak_offset", peak_offset);
 		wave_count = 32;
 		mGlsl->uniform("wave_count", wave_count);
+		ambient = vec3(0.038f, 0.291f, 0.37f);
+		mGlsl->uniform("ambient", ambient);
+		diffuse = vec3(0.592f, 0.755f, 1.00f);
+		mGlsl->uniform("diffuse", diffuse);
+		specular = vec3(0.209f, 0.349f, 1.00f);
+		mGlsl->uniform("specular", specular);
+		lightdir = vec3(0.511f, 1.527f, 3.041f);
+		mGlsl->uniform("lightdir", lightdir);
+		shininess = 5.047f;
+		mGlsl->uniform("shininess", shininess);
+		lightstr = 1.0f;
+		mGlsl->uniform("lightstr", lightstr);
 	}
 	ImGui::End();
 }

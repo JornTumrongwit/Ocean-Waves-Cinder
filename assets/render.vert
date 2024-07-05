@@ -18,6 +18,7 @@ uniform float   peak_offset;
 in vec4			ciPosition;
 in vec2			ciTexCoord0;
 out vec3        w;
+out vec4        position;
 
 vec3 wave(vec3 uv)
 {
@@ -94,4 +95,5 @@ void main(void) {
 	pos.y = w.x;
 	pos.z += zoff;
 	gl_Position = ciModelViewProjection * pos;
+	position = ciModelViewProjection * pos;
 }
