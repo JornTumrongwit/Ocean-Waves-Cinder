@@ -75,6 +75,7 @@ void OceanWavesApp::updateParams()
 	static float peak_offset = 0.2f;
 	static float shininess = 0.4f;
 	static float lightstr = 0.4f;
+	static float drag = 1.0f;
 	static vec3 ambient = vec3(0.0f, 0.0f, 0.1f);
 	static vec3 diffuse = vec3(1.0f, 1.0f, 0.9f);
 	static vec3 lightdir = vec3(1.0f, 1.0f, 1.0f);
@@ -116,6 +117,9 @@ void OceanWavesApp::updateParams()
 	}
 	if (ImGui::DragFloat("peak_offset", &peak_offset, 0.001f)) {
 		mGlsl->uniform("peak_offset", peak_offset);
+	}
+	if (ImGui::DragFloat("drag", &drag, 0.001f)) {
+		mGlsl->uniform("drag", drag);
 	}
 	if (ImGui::InputInt("wave_count", &wave_count, 1)) {
 		mGlsl->uniform("wave_count", wave_count);
@@ -166,6 +170,8 @@ void OceanWavesApp::updateParams()
 		mGlsl->uniform("peak", peak);
 		peak_offset = 0.224f;
 		mGlsl->uniform("peak_offset", peak_offset);
+		drag = 0.1f;
+		mGlsl->uniform("drag", drag);
 		wave_count = 32;
 		mGlsl->uniform("wave_count", wave_count);
 		ambient = vec3(0.038f, 0.291f, 0.37f);
@@ -178,7 +184,7 @@ void OceanWavesApp::updateParams()
 		mGlsl->uniform("lightdir", lightdir);
 		shininess = 5.047f;
 		mGlsl->uniform("shininess", shininess);
-		lightstr = 1.0f;
+		lightstr = 0.553f;
 		mGlsl->uniform("lightstr", lightstr);
 	}
 	ImGui::End();
