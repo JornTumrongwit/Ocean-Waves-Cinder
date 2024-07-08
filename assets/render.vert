@@ -18,10 +18,9 @@ uniform float   drag;
 
 in vec4			ciPosition;
 in vec2			ciTexCoord0;
-out vec3        w;
 out vec4        position;
 
-vec3 wave(vec3 uv)
+float wave(vec3 uv)
 {
 	float a = amplitude;
 	float f = frequency;
@@ -29,7 +28,6 @@ vec3 wave(vec3 uv)
 	float sd = seed;
 	
 	float rise = 0.0;
-	vec2 norm = vec2(0.0);
 	vec3 p = uv;
 
 	float amp_total = 0.0;
@@ -37,10 +35,9 @@ vec3 wave(vec3 uv)
 		vec2 dir = normalize(vec2(cos(sd), sin(sd)));
 		float theta = f*dot(p.xz, dir) + s*timepassed;
 		float wa = a*exp(sin(theta) * peak - peak_offset);
-		vec2 div = f*dir*peak*wa*cos(peak);
+		vec2 div = f*dir*peak*wa*cos(theta);
 
 		rise += wa;
-		norm+=div;
 
 		p.xz += -div * a * drag;
 		
@@ -52,16 +49,13 @@ vec3 wave(vec3 uv)
 		sd += seed_mult;
 	}
 
-	vec3 w = vec3(rise, norm.x, norm.y)/amp_total;
-	w.x += - offset;
-	return w;
+	return rise/amp_total - offset;
 }
 
 void main(void) {
 	vec4 pos = ciPosition;
-	w = wave(pos.xyz);
-	pos.y = w.x;
+	pos.y = wave(pos.xyz);
 	pos.z += zoff;
 	gl_Position = ciModelViewProjection * pos;
-	position = ciModelViewProjection * pos;
+	position = ciPosition;
 }
